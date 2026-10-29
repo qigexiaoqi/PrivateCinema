@@ -29,7 +29,7 @@ PORT = int(os.environ.get("PRIVATECINEMA_PORT")
            or os.environ.get("CINEBOX_PORT", "8426"))
 HOST = (os.environ.get("PRIVATECINEMA_HOST")
         or os.environ.get("CINEBOX_HOST", "0.0.0.0"))
-VERSION = "1.0.0"
+VERSION = "1.0.1"
 
 os.makedirs(DATA_DIR, exist_ok=True)
 os.makedirs(MEDIA_DIR, exist_ok=True)

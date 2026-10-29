@@ -30,7 +30,7 @@ PrivateCinema 是一套**零第三方依赖**的影视站：搜索时并发查�
 | --- | --- |
 | ![转码](docs/preview/27-admin-gpu.png) | ![片源](docs/preview/18-admin-sources.png) |
 
-更多截图见 [`docs/preview`](docs/preview)。
+更多截图见 [`docs/preview`](docs/preview)。版本变更见 [`CHANGELOG.md`](CHANGELOG.md)。
 
 ---
 
@@ -66,10 +66,10 @@ docker compose up -d
 或直接：
 
 ```bash
-docker build -t privatecinema:1.0.0 .
+docker build -t privatecinema:1.0.1 .
 docker run -d --name privatecinema -p 8426:8426 \
   -v "$PWD/data:/app/data" -v "$PWD/media:/app/media" \
-  --restart unless-stopped privatecinema:1.0.0
+  --restart unless-stopped privatecinema:1.0.1
 ```
 
 数据持久化在 `data/`（站点状态）与 `media/`（本地片源、HLS、海报字幕）。

@@ -1,7 +1,7 @@
 services:
   privatecinema:
     build: .
-    image: privatecinema:1.0.0
+    image: privatecinema:1.0.1
     container_name: privatecinema
     restart: unless-stopped
     ports:
