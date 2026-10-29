@@ -1,0 +1,16 @@
+__pycache__/
+**/__pycache__/
+*.pyc
+*.log
+*.zip
+
+# runtime state & media (never commit)
+data/
+media/
+backups/
+.tools/
+
+# local downloads / temp
+test_dl.zip
+test_dl/
+docs/preview/_*

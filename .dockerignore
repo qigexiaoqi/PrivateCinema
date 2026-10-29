@@ -1,0 +1,14 @@
+.git
+.gitignore
+.github
+.tools
+backups
+data
+media
+__pycache__
+**/__pycache__
+*.pyc
+*.log
+*.zip
+test_dl*
+docs/preview/_*

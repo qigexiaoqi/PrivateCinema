@@ -1,0 +1,29 @@
+services:
+  privatecinema:
+    build: .
+    image: privatecinema:1.0.0
+    container_name: privatecinema
+    restart: unless-stopped
+    ports:
+      - "8426:8426"
+    environment:
+      TZ: Asia/Shanghai
+      PRIVATECINEMA_PORT: "8426"
+    volumes:
+      - ./data:/app/data
+      - ./media:/app/media
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys;sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8426/api/health',timeout=3).status==200 else 1)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+    # ---- optional: NVIDIA GPU transcoding ----
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]

@@ -1,0 +1,26 @@
+"""Default external sources seeded into db["sources"] on first run."""
+
+DEFAULT_SOURCES = [
+    {"id": "archive", "name": "Internet Archive", "kind": "archive", "endpoint": "",
+     "enabled": True, "show": True, "builtin": True, "note": "公版影片，多码率 MP4"},
+    {"id": "itunes", "name": "iTunes", "kind": "itunes", "endpoint": "",
+     "enabled": True, "show": True, "builtin": True, "note": "预告片 + 元数据"},
+    {"id": "maccms_lz", "name": "量子资源", "kind": "maccms",
+     "endpoint": "https://cj.lziapi.com/api.php/provide/vod/",
+     "enabled": True, "show": True, "builtin": False, "note": "MacCMS 资源接口 · m3u8"},
+    {"id": "maccms_ff", "name": "非凡资源", "kind": "maccms",
+     "endpoint": "http://ffzy5.tv/api.php/provide/vod/",
+     "enabled": True, "show": True, "builtin": False, "note": "MacCMS 资源接口 · m3u8"},
+    {"id": "maccms_hn", "name": "红牛资源", "kind": "maccms",
+     "endpoint": "https://www.hongniuzy2.com/api.php/provide/vod/",
+     "enabled": True, "show": True, "builtin": False, "note": "MacCMS 资源接口 · m3u8"},
+    {"id": "maccms_wj", "name": "无尽资源", "kind": "maccms",
+     "endpoint": "https://api.wujinapi.me/api.php/provide/vod/",
+     "enabled": True, "show": True, "builtin": False, "note": "MacCMS 资源接口 · m3u8"},
+    {"id": "tvmaze", "name": "TVMaze", "kind": "tvmaze", "endpoint": "",
+     "enabled": True, "show": True, "builtin": True, "note": "剧集元数据"},
+    {"id": "wiki", "name": "Wikipedia", "kind": "wiki", "endpoint": "",
+     "enabled": True, "show": True, "builtin": True, "note": "条目摘要 + 主图"},
+    {"id": "tmdb", "name": "TMDB", "kind": "tmdb", "endpoint": "",
+     "enabled": True, "show": True, "builtin": True, "note": "需在站点设置填 Key"},
+]
