@@ -409,39 +409,6 @@ window.CB = (function () {
 
   /* -------------------------------------------------------------- home */
   async function renderHome(view, route) {
-    if (!state.user) {
-      view.innerHTML = `
-        <section class="hero" style="min-height:380px">
-          <div class="hero-bg" style="background:
-            radial-gradient(700px 400px at 25% 30%, rgba(72,214,200,.22), transparent 62%),
-            radial-gradient(600px 420px at 80% 70%, rgba(124,156,255,.2), transparent 60%),
-            linear-gradient(160deg,#0b1220,#070b11)"></div>
-          <div class="hero-inner">
-            <div class="hero-eyebrow">私人影库 · 自托管放映厅</div>
-            <h1>你的片库，<br/>只属于你。</h1>
-            <p class="synopsis">多清晰度在线播放、可选元数据的下载打包、本机解码模式切换、
-              播放列表与最近播放——全部跑在你自己的一台机器上。</p>
-            <div class="cta">
-              <button class="btn primary" data-cb="login">${icon('user')}${state.settings.allowSignup ? '登录 / 注册' : '登录'}</button>
-              <a class="btn ghost" href="#/search">${icon('search')}先搜索看看</a>
-            </div>
-            <p class="note">访客模式仅开放搜索，其余功能需登录后使用。</p>
-          </div>
-        </section>
-        <div class="section">
-          <div class="section-head"><h2>正在热映</h2><span class="sub">登录后即可播放</span></div>
-          <div class="grid" id="guest-grid"></div>
-        </div>`;
-      try {
-        const res = await api('/api/search?sort=rating', { quiet: true });
-        $('#guest-grid').innerHTML = res.items.length
-          ? res.items.slice(0, 6).map((m) => cardHtml(m)).join('')
-          : '<div class="empty"><h3>片库还没有影片</h3><p>请以管理员身份导入片源。</p></div>';
-        bindCards(view, { guestLock: true });
-      } catch (e) { /* keep landing */ }
-      return;
-    }
-
     view.innerHTML = skeletonRail() + skeletonRail();
     const data = await api('/api/home');
     if (state.route !== route) return;
@@ -461,8 +428,13 @@ window.CB = (function () {
         </div>
       </section>`;
     bindRails(view);
-    bindCards(view);
+    bindCards(view, { guestLock: !state.user });
     bindHero(view, featured);
+    const play = $('#hero-play', view);
+    const dl = $('#hero-dl', view);
+    if (!state.user && play) {
+      play.addEventListener('click', (e) => { e.preventDefault(); openAuth('登录后可查看影片详情'); });
+    }
   }
 
   function heroHtml(items) {
@@ -517,7 +489,7 @@ window.CB = (function () {
     };
     $$('.hero-dots button', hero).forEach((b) => { b.onclick = () => show(Number(b.dataset.dot)); });
     const dl = $('#hero-dl', view);
-    if (dl) dl.onclick = () => navigate(`#/movie/${dl.dataset.mid}?panel=download`);
+    if (dl) dl.onclick = () => { if (!state.user) { openAuth('登录后可播放与下载'); return; } navigate(`#/movie/${dl.dataset.mid}?panel=download`); };
     if (items.length > 1) {
       state.heroTimer = setInterval(() => {
         if (document.hidden || state.route.name !== 'home' || !document.body.contains(hero)) return;

@@ -63,11 +63,11 @@ def h_suggest(ctx):
 
 # --------------------------------------------------------------------- home
 def h_home(ctx):
-    if not _gate(ctx, "片库"):
-        return
+    # 游客也返回同一套首页数据，仅去掉用户私有内容（继续观看 / 片单）
     movies = ctx.store.published()
     cards = {m["id"]: catalog.movie_card(m) for m in movies}
-    history = ctx.store.data.get("history", {}).get(ctx.user["id"], [])[:8]
+    history = (ctx.store.data.get("history", {}).get(ctx.user["id"], [])[:8]
+               if ctx.user else [])
     cont = []
     for h in history:
         card = cards.get(h.get("movieId"))
@@ -83,7 +83,8 @@ def h_home(ctx):
     trending = sorted(movies, key=lambda m: -(m.get("views") or 0))[:12]
     recent = sorted(movies, key=lambda m: -(m.get("createdAt") or 0))[:12]
     top = sorted(movies, key=lambda m: -(m.get("rating") or 0))[:12]
-    playlists = ctx.store.data.get("playlists", {}).get(ctx.user["id"], [])
+    playlists = (ctx.store.data.get("playlists", {}).get(ctx.user["id"], [])
+                 if ctx.user else [])
     ctx.json({
         "ok": True,
         "featured": featured,
@@ -115,7 +116,8 @@ def h_movie(ctx):
                     if x["id"] != mid][: 8 - len(related)]
     hist = next((h for h in ctx.store.data.get("history", {}).get(ctx.user["id"], [])
                  if h.get("movieId") == mid), None)
-    playlists = ctx.store.data.get("playlists", {}).get(ctx.user["id"], [])
+    playlists = (ctx.store.data.get("playlists", {}).get(ctx.user["id"], [])
+                 if ctx.user else [])
     ctx.json({
         "ok": True,
         "movie": detail,

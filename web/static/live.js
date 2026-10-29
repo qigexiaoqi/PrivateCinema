@@ -335,17 +335,13 @@
         <div class="panel-head">
           <h2>${icon('download')}下载到本机</h2>
           <div class="flex" style="margin-left:auto;gap:6px">
-            <button class="btn tiny ghost" id="dl-all">全选</button>
-            <button class="btn tiny ghost" id="dl-invert">反选</button>
-            <button class="btn tiny ghost" id="dl-clear">清除</button>
-            <button class="btn small primary" id="dl-batch" hidden>批量下载</button>
+            <button class="btn small primary" id="dl-batch">批量下载</button>
           </div>
         </div>
         <div class="panel-body">
           <div class="dl-scroll">
             ${rows.length ? rows.map(({ f, i }) => `
               <div class="dl-row">
-                <input type="checkbox" class="dl-check" data-i="${i}" aria-label="选择 ${esc(f.label || f.quality)}" />
                 <div class="dl-main">
                   <b>${esc(f.label || f.quality)}</b>
                   <small>${esc(f.quality)} · ${esc(KIND_LABEL[kindOf(f)] || '')}${f.sizeLabel && f.sizeLabel !== '—' ? ' · ' + esc(f.sizeLabel) : ''}</small>
@@ -354,38 +350,19 @@
               </div>`).join('')
               : '<p class="muted" style="font-size:12px;padding:8px 2px">该线路只有网页播放地址，没有可下载文件。</p>'}
           </div>
-          <p class="note">勾选条目后出现「批量下载」；单条「下载」和批量下载都会先确认清晰度/线路，再点「下载」或「取消」。</p>
+          <p class="note">单条「下载」会先确认清晰度；「批量下载」会打开选集弹窗，在其中选择线路/集数后下载。</p>
         </div>
       </section>`;
   }
 
   function wireDownloads(view, src, files) {
-    const boxes = Array.from(view.querySelectorAll('.dl-check'));
     const batchBtn = $('#dl-batch', view);
-    const refresh = () => {
-      const n = boxes.filter((b) => b.checked).length;
-      if (batchBtn) {
-        batchBtn.hidden = n === 0;
-        batchBtn.textContent = `批量下载 (${n})`;
-      }
-    };
-    boxes.forEach((b) => { b.onchange = refresh; });
-    const all = $('#dl-all', view);
-    const inv = $('#dl-invert', view);
-    const clr = $('#dl-clear', view);
-    if (all) all.onclick = () => { boxes.forEach((b) => { b.checked = true; }); refresh(); };
-    if (inv) inv.onclick = () => { boxes.forEach((b) => { b.checked = !b.checked; }); refresh(); };
-    if (clr) clr.onclick = () => { boxes.forEach((b) => { b.checked = false; }); refresh(); };
     if (batchBtn) {
-      batchBtn.onclick = () => {
-        const selected = boxes.filter((b) => b.checked).map((b) => files[Number(b.dataset.i)]);
-        openBatchDownload(files, selected.map((f) => f._idx), src);
-      };
+      batchBtn.onclick = () => openBatchDownload(files, [], src);
     }
     view.querySelectorAll('[data-one]').forEach((b) => {
       b.onclick = () => openConfirmDownload(files[Number(b.dataset.one)], src);
     });
-    refresh();
   }
 
   /* ------------------------------------------------------------ one source */

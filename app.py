@@ -69,7 +69,7 @@ ROUTES = [
     R("GET", r"/api/live/item", api_live_http.h_live_item),
     R("GET", r"/api/live/group", api_live_http.h_live_group),
     R("GET", r"/api/live/download", api_live_http.h_live_download, "user"),
-    R("GET", r"/api/home", api_catalog.h_home, "user"),
+    R("GET", r"/api/home", api_catalog.h_home),
     R("GET", r"/api/movies/(?P<id>[\w-]+)", api_catalog.h_movie, "user"),
     # playlists / history / downloads
     R("GET", r"/api/playlists", api_catalog.h_playlists, "user"),
