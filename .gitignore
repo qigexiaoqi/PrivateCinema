@@ -11,6 +11,7 @@ backups/
 .tools/
 
 # local downloads / temp
+dist/
 test_dl.zip
 test_dl/
 docs/preview/_*
